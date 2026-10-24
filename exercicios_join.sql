@@ -97,7 +97,7 @@ SELECT p.nome, COUNT(d.id) AS qtd_disciplinas
 FROM professores p
 LEFT JOIN disciplinas d ON p.id = d.professor_id
 GROUP BY p.id, p.nome
-ORDER BY quantidade_disciplinas DESC;
+ORDER BY qtd_disciplinas DESC;
 
 
 
@@ -119,12 +119,8 @@ LEFT JOIN disciplinas d ON p.id = d.professor_id;
 
 SELECT d.nome AS disciplina
 FROM alunos a
-CROSS JOIN disciplinas d
-LEFT JOIN matriculas m
-ON a.id = m.aluno_id
-AND d.id = m.disciplina_id
-WHERE a.nome = 'Gabriela Torres'
-AND m.id IS NULL;
+CROSS JOIN disciplinas d;
+
 
 
 -- 13
