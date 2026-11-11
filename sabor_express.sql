@@ -1,3 +1,12 @@
+-- Lucas ramos
+-- 2205072
+
+-- Wander 
+-- 2213535
+
+-- João pedro
+-- 2201566
+
 DROP DATABASE IF EXISTS sabor_express;
 
 CREATE DATABASE sabor_express CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci;
@@ -143,3 +152,116 @@ INSERT INTO item_pedido (pedido_id, prato_id, avaliacao) VALUES
 (3, 1, 7.0),
 (4, 2, 6.5),
 (4, 4, 9.0);
+
+
+
+
+-- 1
+
+SELECT p.nome AS prato, p.preco, c.nome AS categoria
+
+FROM prato p
+
+INNER JOIN categorias c ON p.categoria_id = c.id
+
+WHERE p.preco > 30.00
+
+ORDER BY p.preco DESC;
+
+-- 2
+
+SELECT pd.data_pedido, pd.nome_cliente, e.nome AS entregador
+
+FROM pedido pd
+
+LEFT JOIN entregador e ON pd.entregador_id = e.id;
+
+-- 3
+
+SELECT e.nome AS entregador
+
+FROM entregador e
+
+LEFT JOIN pedido ped ON e.id = ped.entregador_id
+
+WHERE ped.id IS NULL;
+
+-- 4
+
+SELECT p.nome AS prato, c.nome AS categoria
+
+FROM prato p
+
+INNER JOIN categorias c ON p.categoria_id = c.id
+
+LEFT JOIN ficha_tecnica ft ON p.id = ft.prato_id
+
+WHERE ft.id IS NULL;
+
+-- 5
+
+SELECT p.nome AS prato
+
+FROM prato p
+
+LEFT JOIN item_pedido ip ON p.id = ip.prato_id
+
+WHERE ip.id IS NULL;
+
+
+
+-- 6
+
+SELECT pedido.nome_cliente, prato.nome AS prato, item_pedido.avaliacao
+FROM item_pedido
+INNER JOIN pedido ON item_pedido.pedido_id = pedido.id
+INNER JOIN prato ON item_pedido.prato_id = prato.id
+WHERE item_pedido.avaliacao < 7
+ORDER BY item_pedido.avaliacao ASC;
+
+
+-- 7
+
+SELECT pedido.data_pedido, pedido.nome_cliente
+FROM pedido
+LEFT JOIN item_pedido ON pedido.id = item_pedido.pedido_id
+WHERE item_pedido.id IS NULL;
+
+
+-- 8
+
+SELECT categorias.nome
+FROM categorias
+LEFT JOIN prato ON categorias.id = prato.categoria_id
+WHERE prato.id IS NULL;
+
+
+-- 9
+
+SELECT prato.nome, COUNT(item_pedido.id) AS vezes_pedido
+FROM prato
+LEFT JOIN item_pedido ON prato.id = item_pedido.prato_id
+GROUP BY prato.id, prato.nome;
+
+
+-- 10
+
+SELECT categorias.nome, COUNT(prato.id) AS quantidade_pratos
+FROM categorias
+LEFT JOIN prato ON categorias.id = prato.categoria_id
+GROUP BY categorias.id, categorias.nome
+ORDER BY quantidade_pratos DESC;
+
+
+-- 11 A
+
+SELECT pedido.data_pedido, pedido.nome_cliente, entregador.nome AS entregador
+FROM entregador
+RIGHT JOIN pedido ON entregador.id = pedido.entregador_id;
+
+
+-- 11 B
+
+SELECT pedido.data_pedido, pedido.nome_cliente, entregador.nome AS entregador
+FROM pedido
+LEFT JOIN entregador ON pedido.entregador_id = entregador.id;
